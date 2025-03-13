@@ -16,10 +16,9 @@ public class AppUserService {
 
 
     public AppUserService(AppUserRepository appUserRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
-        appUserRepository.save(new AppUser(null,null,null,bCryptPasswordEncoder.encode("asdf"),"alessandro.trapani03@gmail.com","ale","trapani"));
         this.appUserRepository = appUserRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-        createSampleUsers();
+
     }
 
 

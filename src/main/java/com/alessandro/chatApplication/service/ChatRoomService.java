@@ -15,7 +15,7 @@ public class ChatRoomService {
     public ChatRoomService(ChatRoomRepository chatRoomRepository, AppUserRepository appUserRepository) {
         this.chatRoomRepository = chatRoomRepository;
         this.appUserRepository = appUserRepository;
-        createSampleChatRoom();
+
     }
 
     @Transactional

@@ -29,11 +29,9 @@ public class ChatRoom {
     private Long chatId;
 
     @ManyToOne
-    @JoinColumn(name = "sender_id") // Maps to AppUser's sentChatRooms
     private AppUser sender;
 
     @ManyToOne
-    @JoinColumn(name = "recipient_id") // Maps to AppUser's receivedChatRooms
     private AppUser recipient;
 
     @OneToMany(mappedBy = "chatRoom")

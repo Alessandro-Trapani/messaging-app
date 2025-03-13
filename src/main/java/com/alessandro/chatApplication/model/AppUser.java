@@ -6,9 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @EqualsAndHashCode
 @Entity
@@ -42,22 +40,10 @@ public class AppUser {
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    @OneToMany
-    private Map<AppUser, ChatRoom> chatRoom;
-
-    @OneToMany(mappedBy = "sender")
-    private List<ChatRoom> sentChatRooms = new ArrayList<>();
-
-    @OneToMany(mappedBy = "recipient")
-    private List<ChatRoom> receivedChatRooms = new ArrayList<>();
     public static String ONLINE = "Online";
     public static String OFFLINE = "Offline";
 
-
-    public AppUser(List<ChatRoom> receivedChatRooms, List<ChatRoom> sentChatRooms, Map<AppUser, ChatRoom> chatRoom, String password, String email, String lastName, String firstName) {
-        this.receivedChatRooms = receivedChatRooms;
-        this.sentChatRooms = sentChatRooms;
-        this.chatRoom = chatRoom;
+    public AppUser(  String password, String email, String lastName, String firstName) {
         this.status = Status.OFFLINE;
         this.password = password;
         this.email = email;

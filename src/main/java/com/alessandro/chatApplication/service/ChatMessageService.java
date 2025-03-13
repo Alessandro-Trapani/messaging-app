@@ -22,7 +22,7 @@ public class ChatMessageService {
         this.chatMessageRepository = chatMessageRepository;
         this.chatRoomRepository = chatRoomRepository;
         this.appUserRepository = appUserRepository;
-        createSampleMessages();
+
     }
 
     @Transactional
