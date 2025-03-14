@@ -43,11 +43,12 @@ public class AppUser {
     public static String ONLINE = "Online";
     public static String OFFLINE = "Offline";
 
-    public AppUser(  String password, String email, String lastName, String firstName) {
-        this.status = Status.OFFLINE;
-        this.password = password;
+    public AppUser(  String email, String password, String lastName, String firstName) {
+
         this.email = email;
+        this.password = password;
         this.lastName = lastName;
         this.firstName = firstName;
+        this.status = Status.OFFLINE;
     }
 }

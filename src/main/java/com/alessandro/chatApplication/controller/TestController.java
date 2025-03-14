@@ -17,10 +17,6 @@ public class TestController {
         this.chatMessageService = chatMessageService;
         this.chatRoomService = chatRoomService;
 
-        // Correct order: create users FIRST
-        appUserService.createSampleUsers(); // <-- Must come first
-        chatRoomService.createSampleChatRoom(); // <-- Depends on users
-        chatMessageService.createSampleMessages(); // <-- Depends on users and chat room
     }
 
 

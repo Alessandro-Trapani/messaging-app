@@ -6,9 +6,7 @@ import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 @Component
@@ -20,15 +18,12 @@ public class SocketHandler extends TextWebSocketHandler {
     public void handleTextMessage(WebSocketSession session, TextMessage message)
             throws InterruptedException, IOException {
 
-        for(WebSocketSession webSocketSession : sessions) {
-            String name = message.getPayload();
-            webSocketSession.sendMessage(new TextMessage("Hello " +name + " !"));
-        }
+        System.out.println(message.getPayload());
     }
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-        //the messages will be broadcasted to all users.
+        System.out.println(session.getHandshakeHeaders().get("Authentication"));
         sessions.add(session);
     }
 }
