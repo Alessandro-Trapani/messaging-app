@@ -1,6 +1,7 @@
 package com.alessandro.chatApplication.security.JWT;
 
 import com.alessandro.chatApplication.model.AppUser;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -47,6 +48,17 @@ public class JwtUtil {
         return null;
     }
 
+    public String extractEmail(String jwt) {
+        Claims claims = Jwts.parserBuilder()
+                .setSigningKey(SECRET_KEY)
+                .build()
+                .parseClaimsJws(jwt)
+                .getBody();
+
+        return claims.get("email", String.class);
+    }
+
+
     public boolean isValidToken(String token) {
         if (token == null || token.isEmpty()) {
             return false;
@@ -69,7 +81,7 @@ public class JwtUtil {
             System.err.println("JWT token is null or empty: " + e.getMessage());
         }
 
-        return false; // Token is invalid
+        return false;
     }
     }
 

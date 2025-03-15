@@ -1,8 +1,7 @@
 package com.alessandro.chatApplication.service;
 import com.alessandro.chatApplication.model.AppUser;
-import com.alessandro.chatApplication.model.Status;
 import com.alessandro.chatApplication.repository.AppUserRepository;
-import jakarta.transaction.Transactional;
+import com.alessandro.chatApplication.security.JWT.JwtUtil;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +17,10 @@ public class AppUserService {
         this.appUserRepository = appUserRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
 
+
     }
+
+
 
 
     public Optional<AppUser> findByEmail(String email){
@@ -26,6 +28,7 @@ public class AppUserService {
     }
 
     public void save(AppUser appUser){
+        System.out.println(appUser.getEmail() +"    :    "+ JwtUtil.generateToken(appUser));
         appUser.setPassword(encryptPassword(appUser.getPassword()));
         appUserRepository.save(appUser);
     }
@@ -35,9 +38,8 @@ public class AppUserService {
     }
 
     public boolean validatePassword(String rawPassword, String hashedPassword) {
-       boolean passwordMatch = bCryptPasswordEncoder.matches(rawPassword, hashedPassword);
 
-       return true;
+        return bCryptPasswordEncoder.matches(rawPassword, hashedPassword);
     }
 
 }

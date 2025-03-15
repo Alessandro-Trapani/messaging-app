@@ -13,31 +13,43 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @Component
 public class SocketHandler extends TextWebSocketHandler {
 
-    private final AuthenticationManager authenticationManager;
-    private final List<WebSocketSession> sessions = new CopyOnWriteArrayList<>();
+    private final SessionRegistry sessionRegistry;
 
-
-    public SocketHandler(AuthenticationManager authenticationManager) {
-        this.authenticationManager = authenticationManager;
-          }
-
-    @Override
-    public void handleTextMessage(WebSocketSession session, TextMessage message)
-            throws IOException {
-        System.out.println(message.getPayload());
+    public SocketHandler(SessionRegistry sessionRegistry) {
+        this.sessionRegistry = sessionRegistry;
     }
 
     @Override
-    public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-        String authHeader = Objects.requireNonNull(
-                session.getHandshakeHeaders().get("Authentication")
-        ).toString();
-        // header has two parenthesis like: [header] by default, so i substring it
-        if (authHeader.length() >= 2) {
-            authHeader = authHeader.substring(1, authHeader.length() - 1);
-        }
+    public void afterConnectionEstablished(WebSocketSession session) {
+        String userEmail = (String) session.getAttributes().get("userEmail");
+        sessionRegistry.register(userEmail, session);
+    }
 
-        authenticationManager.authenticate(authHeader);
-        sessions.add(session);
+    @Override
+    protected void handleTextMessage(WebSocketSession senderSession,
+                                     TextMessage message) throws IOException {
+
+        String senderEmail = (String) senderSession.getAttributes().get("userEmail");
+
+        // Expected message format: "recipient@example.com:Hello there!"
+        String userMessage = message.getPayload();
+        System.out.println(userMessage);
+
+
+        String email = Objects.requireNonNull(senderSession.getUri()).toString().split("/")[senderSession.getUri().toString().split("/").length - 1];
+
+
+
+        System.out.println("Extracted email: " + email);
+
+        sessionRegistry.getSession(email).ifPresent(recipientSession -> {
+            try {
+                String formattedMessage = String.format("[From %s] %s",
+                        senderEmail, userMessage);
+                recipientSession.sendMessage(new TextMessage(formattedMessage));
+            } catch (IOException e) {
+                // Handle send failure
+            }
+        });
     }
 }

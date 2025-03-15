@@ -9,6 +9,7 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.List;
 
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
@@ -37,9 +38,8 @@ public class ChatRoom {
     @OneToMany(mappedBy = "chatRoom")
     private List<ChatMessage> messages = new ArrayList<>();
 
-    public ChatRoom(AppUser sender, AppUser recipient, List<ChatMessage> messages) {
+    public ChatRoom(AppUser sender, AppUser recipient) {
         this.sender = sender;
         this.recipient = recipient;
-        this.messages = messages;
     }
 }

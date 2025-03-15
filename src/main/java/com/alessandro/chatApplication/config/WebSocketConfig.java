@@ -10,15 +10,17 @@ import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry
 public class WebSocketConfig implements WebSocketConfigurer {
 
     private final SocketHandler socketHandler;
+    private final AuthHandshakeInterceptor authInterceptor;
 
-    // Inject SocketHandler via constructor
-    public WebSocketConfig(SocketHandler socketHandler) {
+    public WebSocketConfig(SocketHandler socketHandler, AuthHandshakeInterceptor authInterceptor) {
         this.socketHandler = socketHandler;
+        this.authInterceptor = authInterceptor;
     }
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(socketHandler, "/name")
-                .setAllowedOrigins("*"); // Add CORS if needed
+        registry.addHandler(socketHandler, "/user/{userEmail}")
+                .addInterceptors(authInterceptor)
+                .setAllowedOrigins("*");
     }
 }
