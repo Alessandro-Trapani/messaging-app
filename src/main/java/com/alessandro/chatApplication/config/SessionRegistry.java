@@ -25,7 +25,5 @@ public class SessionRegistry {
     }
 
 
-    public ConcurrentMap<String, WebSocketSession> getSessions(){
-        return sessions;
-    }
+
 }

@@ -27,7 +27,6 @@ public class LoginController {
     @GetMapping("/login")
     public ResponseEntity<String> login(HttpServletRequest request, @RequestBody UserDto userDto) {
         Optional<AppUser> user = appUserService.findByEmail(userDto.email());
-        System.out.println(userDto.email());
 
         if (user.isPresent()) {
 

@@ -43,7 +43,6 @@ public class SessionController {
     }
 
     public void saveMessageWithEmail(String senderEmail, String recipientEmail, String message) {
-        System.out.println("saving message");
         AppUser sender = appUserService.findByEmail(senderEmail).orElseThrow();
         AppUser recipient = appUserService.findByEmail(recipientEmail).orElseThrow();
         ChatRoom chatRoom = chatRoomService.findByRecipientAndSender(recipient,sender).orElseThrow();

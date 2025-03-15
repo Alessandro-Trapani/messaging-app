@@ -27,8 +27,9 @@ public class SocketHandler extends TextWebSocketHandler {
     @Override
     public void afterConnectionEstablished(WebSocketSession session) {
         String userEmail = (String) session.getAttributes().get("userEmail");
-        System.out.println(session.toString());
-        sessionRegistry.register(userEmail, session);
+            sessionRegistry.register(userEmail, session);
+
+
     }
 
     @Override
@@ -38,27 +39,18 @@ public class SocketHandler extends TextWebSocketHandler {
         String senderEmail = (String) senderSession.getAttributes().get("userEmail");
 
         String userMessage = message.getPayload();
-        System.out.println(userMessage);
 
 
         String recipientEmail = Objects.requireNonNull(senderSession.getUri()).toString().split("/")[senderSession.getUri().toString().split("/").length - 1];
         sessionController.saveMessageWithEmail(senderEmail, recipientEmail,message.getPayload());
 
 
-        System.out.println("Extracted recipientEmail: " + recipientEmail);
 
         sessionRegistry.getSession(recipientEmail).ifPresent(recipientSession -> {
             try {
                 String formattedMessage = String.format("[From %s] %s",
                         senderEmail, userMessage);
 
-                AppUser sender = sessionController.findByEmail(senderEmail);
-                AppUser recipient = sessionController.findByEmail(recipientEmail);
-
-                List<ChatMessage> messages = sessionController.findMessagesFromUser(sender,recipient);
-                for(ChatMessage chatMessage : messages){
-                    recipientSession.sendMessage(new TextMessage(chatMessage.getContent()));
-                }
                 recipientSession.sendMessage(new TextMessage(formattedMessage));
             } catch (Exception e) {
 

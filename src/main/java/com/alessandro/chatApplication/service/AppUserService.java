@@ -21,14 +21,11 @@ public class AppUserService {
     }
 
 
-
-
     public Optional<AppUser> findByEmail(String email){
         return appUserRepository.findByEmail(email);
     }
 
     public void save(AppUser appUser){
-        System.out.println(appUser.getEmail() +"    :    "+ JwtUtil.generateToken(appUser));
         appUser.setPassword(encryptPassword(appUser.getPassword()));
         appUserRepository.save(appUser);
     }

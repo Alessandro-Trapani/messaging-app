@@ -55,7 +55,7 @@ public class AuthHandshakeInterceptor implements HandshakeInterceptor {
             return  false;
         }
 
-
+        attributes.put("userEmail", authenticatedEmail);
 
         sessionController.createChatRoomWithEmails(targetEmail,authenticatedEmail);
         return true;
