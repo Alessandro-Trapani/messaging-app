@@ -14,8 +14,8 @@ public class AuthenticationManager {
         this.jwtUtil = jwtUtil;
     }
 
-    public void authenticate(HttpServletRequest request){
-       boolean isValid = jwtUtil.isValidToken(jwtUtil.extractTokenFromHeader(request));
+    public void authenticate(String jwt){
+       boolean isValid = jwtUtil.isValidToken(jwt);
 
        if(!isValid){
            throw new TokenNotValidException("JWT token is not valid");

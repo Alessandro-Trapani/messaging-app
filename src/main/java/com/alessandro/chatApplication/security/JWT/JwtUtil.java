@@ -48,18 +48,30 @@ public class JwtUtil {
     }
 
     public boolean isValidToken(String token) {
-        try {
-
-            Jwts.parser()
-                    .setSigningKey(SECRET_KEY)
-                    .parseClaimsJws(token);
-
-            return true;
-        } catch (Exception e) {
-
+        if (token == null || token.isEmpty()) {
             return false;
         }
+
+        try {
+            Jwts.parserBuilder()
+                    .setSigningKey(SECRET_KEY)
+                    .build()
+                    .parseClaimsJws(token);
+
+            return true; // Token is valid
+        } catch (io.jsonwebtoken.security.SecurityException | io.jsonwebtoken.MalformedJwtException e) {
+            System.err.println("Invalid JWT token: " + e.getMessage());
+        } catch (io.jsonwebtoken.ExpiredJwtException e) {
+            System.err.println("JWT token expired: " + e.getMessage());
+        } catch (io.jsonwebtoken.UnsupportedJwtException e) {
+            System.err.println("Unsupported JWT token: " + e.getMessage());
+        } catch (IllegalArgumentException e) {
+            System.err.println("JWT token is null or empty: " + e.getMessage());
+        }
+
+        return false; // Token is invalid
+    }
     }
 
 
-}
+
