@@ -3,6 +3,7 @@ package com.alessandro.chatApplication.config;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.WebSocketSession;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -21,5 +22,10 @@ public class SessionRegistry {
 
     public void remove(String email) {
         sessions.remove(email);
+    }
+
+
+    public ConcurrentMap<String, WebSocketSession> getSessions(){
+        return sessions;
     }
 }

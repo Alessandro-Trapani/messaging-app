@@ -11,10 +11,9 @@ spring:
     properties:
       hibernate:
         hbm2ddl:
-          create-script: create.sql
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
-    show-sql: true
+
   h2:
     console:
       enabled: true

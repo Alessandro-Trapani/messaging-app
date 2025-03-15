@@ -1,11 +1,11 @@
 package com.alessandro.chatApplication.security.JWT;
 
+import com.alessandro.chatApplication.exception.TokenNotValidException;
 import com.alessandro.chatApplication.model.AppUser;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -38,15 +38,7 @@ public class JwtUtil {
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY)  // Sign with secret key
                 .compact();
     }
-    public String extractTokenFromHeader(HttpServletRequest request) {
-        String authorizationHeader = request.getHeader("Authorization");
 
-        if (authorizationHeader != null && authorizationHeader.startsWith(BEARER_PREFIX)) {
-            return authorizationHeader.substring(BEARER_PREFIX.length());
-        }
-
-        return null;
-    }
 
     public String extractEmail(String jwt) {
         Claims claims = Jwts.parserBuilder()
@@ -59,10 +51,12 @@ public class JwtUtil {
     }
 
 
-    public boolean isValidToken(String token) {
+    public void isValidToken(String token) {
+
         if (token == null || token.isEmpty()) {
-            return false;
+           throw new TokenNotValidException("token is null/empty");
         }
+
 
         try {
             Jwts.parserBuilder()
@@ -70,7 +64,6 @@ public class JwtUtil {
                     .build()
                     .parseClaimsJws(token);
 
-            return true; // Token is valid
         } catch (io.jsonwebtoken.security.SecurityException | io.jsonwebtoken.MalformedJwtException e) {
             System.err.println("Invalid JWT token: " + e.getMessage());
         } catch (io.jsonwebtoken.ExpiredJwtException e) {
@@ -81,7 +74,6 @@ public class JwtUtil {
             System.err.println("JWT token is null or empty: " + e.getMessage());
         }
 
-        return false;
     }
     }
 

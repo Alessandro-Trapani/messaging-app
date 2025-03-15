@@ -12,7 +12,7 @@ public class AuthenticationManager {
     }
 
     public void authenticate(String jwt){
-       boolean isValid = jwtUtil.isValidToken(jwt);
+       jwtUtil.isValidToken(jwt);
     }
 
     public String getEmail(String jwt){

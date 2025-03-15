@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Time;
 import java.time.LocalTime;
+import java.util.List;
 
 @Service
 public class ChatMessageService {
@@ -25,4 +26,7 @@ public class ChatMessageService {
         chatMessageRepository.save(message);
     }
 
+    public List<ChatMessage> findMessagesFromUser(AppUser recipient, AppUser sender) {
+        return chatMessageRepository.findByRecipientAndSender(recipient,sender);
+    }
 }
